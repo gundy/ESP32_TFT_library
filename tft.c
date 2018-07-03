@@ -42,7 +42,8 @@ extern uint8_t tft_Comic24[];
 extern uint8_t tft_minya24[];
 extern uint8_t tft_tooney32[];
 extern uint8_t tft_def_small[];
-
+extern uint8_t tft_symbols[];
+ 
 // ==== Color definitions constants ==============
 const color_t TFT_BLACK       = {   0,   0,   0 };
 const color_t TFT_NAVY        = {   0,   0, 128 };
@@ -1486,44 +1487,99 @@ static void _testFont() {
 //===================================================
 void TFT_setFont(uint8_t font, const char *font_file)
 {
-  cfont.font = NULL;
+	cfont.font = NULL;
 
-  if (font == FONT_7SEG) {
-    cfont.bitmap = 2;
-    cfont.x_size = 24;
-    cfont.y_size = 6;
-    cfont.offset = 0;
-    cfont.color  = _fg;
-  }
-  else {
-	  if (font == USER_FONT) {
-		  if (load_file_font(font_file, 0) != 0) cfont.font = tft_DefaultFont;
-		  else cfont.font = userfont;
-	  }
-	  else if (font == DEJAVU18_FONT) cfont.font = tft_Dejavu18;
-	  else if (font == DEJAVU24_FONT) cfont.font = tft_Dejavu24;
-	  else if (font == UBUNTU16_FONT) cfont.font = tft_Ubuntu16;
-	  else if (font == COMIC24_FONT) cfont.font = tft_Comic24;
-	  else if (font == MINYA24_FONT) cfont.font = tft_minya24;
-	  else if (font == TOONEY32_FONT) cfont.font = tft_tooney32;
-	  else if (font == SMALL_FONT) cfont.font = tft_SmallFont;
-	  else if (font == DEF_SMALL_FONT) cfont.font = tft_def_small;
-	  else cfont.font = tft_DefaultFont;
+	if(font == FONT_7SEG) 
+	{
+	    cfont.bitmap = 2;
+	    cfont.x_size = 24;
+	    cfont.y_size = 6;
+	    cfont.offset = 0;
+	    cfont.color  = _fg;
+	}
+	else 
+	{
+		switch(font)
+		{
+			case USER_FONT:
+			{
+				if(load_file_font(font_file, 0) != 0) 
+				{
+					cfont.font = tft_DefaultFont;
+				}		   		
+				else 
+				{
+					cfont.font = userfont;
+				}			
+				break;			
+			}
+			case DEJAVU18_FONT:
+			{
+				cfont.font = tft_Dejavu18;
+				break;
+			}
+			case DEJAVU24_FONT:
+			{
+				cfont.font = tft_Dejavu24;
+				break;
+			}
+			case UBUNTU16_FONT:
+			{
+				cfont.font = tft_Ubuntu16;
+				break;	
+			}
+			case COMIC24_FONT:
+			{
+				cfont.font = tft_Comic24;
+				break;	
+			}
 
-	  cfont.bitmap = 1;
-	  cfont.x_size = cfont.font[0];
-	  cfont.y_size = cfont.font[1];
-	  if (cfont.x_size > 0) {
-		  cfont.offset = cfont.font[2];
-		  cfont.numchars = cfont.font[3];
-		  cfont.size = cfont.x_size * cfont.y_size * cfont.numchars;
-	  }
-	  else {
-		  cfont.offset = 4;
-		  getMaxWidthHeight();
-	  }
-	  //_testFont();
-  }
+			case MINYA24_FONT:
+			{
+				cfont.font = tft_minya24;
+				break;	
+			}
+			case TOONEY32_FONT:
+			{
+				cfont.font = tft_tooney32;
+				break;	
+			}
+			case SMALL_FONT:
+			{
+				cfont.font = tft_SmallFont;
+				break;	
+			}
+			case DEF_SMALL_FONT:
+			{
+				cfont.font = tft_def_small;
+				break;	
+			}
+			case SYMBOLS_FONT:
+			{
+				cfont.font = tft_symbols;
+				break;	
+			}
+			default:
+			{
+				cfont.font = tft_DefaultFont;
+			}
+		}
+ 
+		cfont.bitmap = 1;
+	  	cfont.x_size = cfont.font[0];
+	  	cfont.y_size = cfont.font[1];
+	  	if(cfont.x_size > 0) 
+		{
+		 	cfont.offset = cfont.font[2];
+		  	cfont.numchars = cfont.font[3];
+		  	cfont.size = cfont.x_size * cfont.y_size * cfont.numchars;
+	  	}
+	  	else 
+		{
+			cfont.offset = 4;
+			getMaxWidthHeight();
+	  	}
+	}
 }
 
 // -----------------------------------------------------------------------------------------
